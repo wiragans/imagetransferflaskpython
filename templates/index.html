@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Image Upload</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link href="https://api.kmsp-store.com/api/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+</head>
+<body>
+<script>
+$('#spinnernya').hide();
+</script>
+<div class="container" style="margin-top: 150px; margin-bottom: 150px;">
+  <h2>Image Upload</h2>
+  <form action="https://wiraoke300.pythonanywhere.com/api/image_upload" method="POST" enctype="multipart/form-data" name="formnya" id="formnya">
+    <div class="form-group">
+      <label for="gambar">Browse Gambar:</label>
+      <input type="file" class="form-control" name="gambar" id="gambar" placeholder="Masukkan Gambar" accept="image/*">
+    </div>
+    <button type="button" name="submitGambar" id="submitGambar" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true"></i> Upload Gambar</button> <button type="button" name="lihatGallery" id="lihatGallery" class="btn btn-danger"><i class="fa fa-eye" aria-hidden="true"></i> Lihat Gallery</button>
+  </form>
+  <div class="spinner-border" name="spinnernya" id="spinnernya" style="margin-top: 20px;"></div>
+  <p name="hasil" id="hasil" style="color: red; font-weight: bold; margin-top: 10px;"></p>
+  <center><p><b>Created By:<br>Wira Dwi Susanto (NIM 17.01.53.0053)<br>Ardi Kurniawan (NIM 17.01.53.0071)</b></p></center>
+</div>
+<script>
+$(document).ready(function(){
+$('#spinnernya').hide();
+$('#submitGambar').click(function(){
+var form_data = new FormData($('#formnya')[0]);
+
+$.ajax({
+        type:'POST',
+        crossDomain: true,
+        processData: false,
+        contentType: false,
+        url: "https://wiraoke300.pythonanywhere.com/api/image_upload",
+        data:form_data,
+        error:function(xhr, ajaxOptions, thrownError){
+        //alert("Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!");
+        $('#spinnernya').hide();
+        $('#hasil').html("Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!");
+        },
+        cache:false,
+        beforeSend:function(request){
+        //request.setRequestHeader("Content-Type", "multipart/form-data");
+        $('#spinnernya').show();
+        },
+        success:function(s){
+	        if(s['code'] == "01")
+	        {
+	        	//GAGAL
+	            //alert(s['message']);
+	            $('#spinnernya').hide();
+	            $('#hasil').html(s['message']);
+	        }
+
+	        if(s['code'] == "00")
+	        {
+	            //SUKSES
+	        	//alert(s['message']);
+	        	$('#spinnernya').hide();
+	        	$('#hasil').html(s['message']);
+	        }
+        }
+        });
+});
+
+$('#lihatGallery').click(function(){
+window.location.href = 'https://wiraoke300.pythonanywhere.com/gallery';
+});
+});
+</script>
+</body>
+</html>

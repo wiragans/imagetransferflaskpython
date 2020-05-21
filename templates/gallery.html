@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Image Gallery</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link href="https://api.kmsp-store.com/api/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+</head>
+<body>
+<div class="container" style="margin-top: 150px; margin-bottom: 150px;">
+  <h2>Image Gallery</h2>
+  <button type="button" name="uploadGambar2" id="uploadGambar2" class="btn btn-primary"><i class="fa fa-paper-plane" aria-hidden="true"></i> Upload Gambar</button>
+  <p name="hasil" id="hasil" style="color: red; font-weight: bold; margin-top: 10px;"></p>
+  <button type="button" name="uploadGambar" id="uploadGambar" class="btn btn-primary"><i class="fa fa-paper-plane" aria-hidden="true"></i> Upload Gambar</button>
+  <center><p><b>Created By:<br>Wira Dwi Susanto (NIM 17.01.53.0053)<br>Ardi Kurniawan (NIM 17.01.53.0071)</b></p></center>
+</div>
+<script>
+$(document).ready(function(){
+$.ajax({
+        type:'GET',
+        crossDomain: true,
+        url: "https://wiraoke300.pythonanywhere.com/api/image_client_get",
+        data:{},
+        'contentType': 'application/x-www-form-urlencoded',
+        error:function(xhr, ajaxOptions, thrownError){
+        alert("Terjadi kesalahan saat memuat gambar. Silakan coba reload halaman ini!");
+        },
+        cache:false,
+        beforeSend:function(request){
+        //
+        },
+        success:function(s){
+	        if(s['code'] == "01")
+	        {
+	        	//GAGAL
+	        	alert("Terjadi kesalahan!");
+	        }
+
+	        if(s['code'] == "00")
+	        {
+	        	//SUKSES
+	        	for(var a = 0; a < s['data'].length; a++)
+                {
+                    $('#hasil').append('<center><a href="' + s['data'][a]['url'] + '"><img class="img-thumbnail" style="max-width: 100%; height: auto;" src="' + s['data'][a]['url'] + '"></a></center><br><br>');
+                }
+	        }
+        }
+        });
+
+$('#uploadGambar').click(function(){
+window.location.href = 'https://wiraoke300.pythonanywhere.com/upload_gambar';
+});
+
+$('#uploadGambar2').click(function(){
+window.location.href = 'https://wiraoke300.pythonanywhere.com/upload_gambar';
+});
+});
+</script>
+</body>
+</html>
